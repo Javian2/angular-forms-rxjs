@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsComponent } from './forms.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
   { 
@@ -26,6 +27,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ],
   exports: [

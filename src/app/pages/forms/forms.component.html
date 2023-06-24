@@ -1,2 +1,10 @@
-<p>forms works!</p>
+<app-back-button [route]="'home'"></app-back-button>
+
+<div>
+    <a [routerLink]="[ 'template' ]">Template</a>
+</div>
+<div>
+    <a [routerLink]="[ 'reactive' ]">Reactive</a>
+</div>
+
 <router-outlet></router-outlet>
