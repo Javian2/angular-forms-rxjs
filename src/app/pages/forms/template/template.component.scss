@@ -1,0 +1,23 @@
+form{
+    margin-top: 5em;
+
+    div{
+        
+        label{
+            display: inline-block;
+            width: 100px;
+        }
+
+        input, select{
+            margin-bottom: 1em;
+
+            &.invalid{
+                border: 1px solid red;
+            }
+        }
+    }
+}
+
+button{
+    margin-top: 0.5em;
+}

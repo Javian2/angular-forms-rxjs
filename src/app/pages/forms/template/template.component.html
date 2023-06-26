@@ -1,1 +1,41 @@
-<p>template works!</p>
+<form #heroForm="ngForm" (ngSubmit)="onSubmit(heroForm)">
+    <div>
+        <label for="name">Nombre</label>
+        <input 
+            #name="ngModel" 
+            [ngClass]="{'invalid': name.invalid}" 
+            [(ngModel)]="heroModel.name" 
+            name="name" id="name" type="text" required>
+    </div>
+    <div>
+        <label for="alter_ego">Alter Ego</label>
+        <input 
+            #alter_ego="ngModel"
+            [ngClass]="{'invalid': alter_ego.invalid}" 
+            [(ngModel)]="heroModel.alter_ego" 
+            name="alter_ego" id="alter_ego" type="text" minlength="3">
+    </div>
+    <div>
+        <label for="power">Poder</label>
+        <select [(ngModel)]="heroModel.power" name="power" id="power">
+            <option *ngFor="let power of powerNames" [value]="power">
+                {{power}}
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="enemies">Enemigos</label>
+        <input 
+            #enemies="ngModel"
+            [ngClass]="{'invalid': enemies.invalid}" 
+            [(ngModel)]="heroModel.enemies" 
+            name="enemies" id="enemies" type="number" min="1">
+    </div>
+    <div>
+        <label for="dead">Muerto</label>
+        <input [(ngModel)]="heroModel.dead" name="dead" id="dead" type="checkbox">
+    </div>
+    <button (click)="updateFormValues(heroForm)">Actualizar datos</button>
+    <button (click)="updateAllFormValues(heroForm)">Actualizar TODOS los datos</button>
+    <button [disabled]="heroForm.invalid" type="submit">Enviar</button>
+</form>
