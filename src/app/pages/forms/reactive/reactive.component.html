@@ -1,1 +1,51 @@
-<p>reactive works!</p>
+<h3>Campo individual</h3>
+<div class="field">
+    <label for="name">Name: </label>
+    <input id="name" type="text" [formControl]="name">
+    
+    <p>Value: {{ name.value }}</p>
+
+    <button (click)="updateName();">Actualizar nombre</button>
+</div>
+
+<h3>FormGroup</h3>
+<div class="formGroup">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+        <div>
+            <label for="first-name">First Name: </label>
+            <input id="first-name" type="text" formControlName="firstName" [ngClass]="{'invalid': profileForm.controls.firstName.invalid}">
+        </div>
+        <div>
+            <label for="last-name">Last Name: </label>
+            <input id="last-name" type="text" formControlName="lastName">
+        </div>
+
+        <h4>Dirección</h4>
+        <section formGroupName="address">
+            <div>
+                <label for="street">Street: </label>
+                <input id="street" type="text" formControlName="street">
+            </div>
+            <div>
+                <label for="city">City: </label>
+                <input id="city" type="text" formControlName="city" [ngClass]="{'invalid': profileForm.get('address.city')?.invalid}">
+            </div>
+            <div>
+                <label for="state">State: </label>
+                <input id="state" type="text" formControlName="state">
+            </div>
+            <div>
+                <label for="zip">Zip Code: </label>
+                <input id="zip" type="text" formControlName="zip">
+            </div>
+        </section>
+
+        <button (click)="updateProfile()">Actualizar perfil</button>
+        <button type="submit" [disabled]="!profileForm.valid">Enviar</button>
+
+
+        <p>Value: {{ profileForm.value | json}}</p>
+
+    </form>
+</div>

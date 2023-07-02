@@ -1,0 +1,24 @@
+.field {
+    border: 1px solid black;
+    padding: 1em;
+}
+
+.formGroup{
+    padding: 1em;
+    border: 1px solid black;
+
+    form{
+        div{
+            margin-bottom: 5px;
+
+            label{
+                width: 100px;
+                display: inline-block;
+            }
+
+            input.invalid{
+                border: 1px solid red;
+            }
+        }
+    }
+}
