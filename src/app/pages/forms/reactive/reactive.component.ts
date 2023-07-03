@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reactive',
@@ -20,6 +20,9 @@ export class ReactiveComponent {
       state: [''],
       zip: ['']
     }),
+    aliases: this.fb.array([
+      this.fb.control('')
+    ])
   })
 
   // profileForm = new FormGroup({
@@ -30,7 +33,8 @@ export class ReactiveComponent {
   //     city: new FormControl(''),
   //     state: new FormControl(''),
   //     zip: new FormControl('')
-  //   })
+  //   }),
+  //   aliases: new FormArray([])
   // });
 
 
@@ -49,6 +53,14 @@ export class ReactiveComponent {
 
   onSubmit() {
     console.log(this.profileForm.value);
+  }
+
+  get aliases() {
+    return this.profileForm.get('aliases') as FormArray;
+  }
+
+  addAlias() {
+    this.aliases.push(this.fb.control(''));
   }
 
 }

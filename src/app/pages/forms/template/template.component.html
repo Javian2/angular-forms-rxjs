@@ -38,4 +38,7 @@
     <button (click)="updateFormValues(heroForm)">Actualizar datos</button>
     <button (click)="updateAllFormValues(heroForm)">Actualizar TODOS los datos</button>
     <button [disabled]="heroForm.invalid" type="submit">Enviar</button>
+
+    <p>Value: {{ heroForm.value | json}}</p>
+
 </form>

@@ -41,11 +41,21 @@
             </div>
         </section>
 
-        <button (click)="updateProfile()">Actualizar perfil</button>
-        <button type="submit" [disabled]="!profileForm.valid">Enviar</button>
+        <h4>Aliases</h4>
+        <section formArrayName="aliases">
+            <button type="button" (click)="addAlias()">+ Añadir alias</button>
+          
+            <div *ngFor="let alias of aliases.controls; let i=index">
+              <label for="alias-{{ i }}">Alias:</label>
+              <input id="alias-{{ i }}" type="text" [formControlName]="i">
+            </div>
+        </section>
 
-
-        <p>Value: {{ profileForm.value | json}}</p>
+        <section class="buttons">
+            <button (click)="updateProfile()">Actualizar perfil</button>
+            <button type="submit" [disabled]="!profileForm.valid">Enviar</button>
+            <p>Value: {{ profileForm.value | json}}</p>
+        </section>
 
     </form>
 </div>
