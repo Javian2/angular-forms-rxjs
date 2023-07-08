@@ -11,6 +11,7 @@ const routes: Routes = [
     children: [
       { path: 'reactive', loadChildren: () => import('./reactive/reactive.module').then(m => m.ReactiveModule) },
       { path: 'template', loadChildren: () => import('./template/template.module').then(m => m.TemplateModule) },
+      { path: 'control-value-accessor', loadChildren: () => import('./control-value-accesor/control-value-accesor.module').then(m => m.ControlValueAccesorModule) },
     ]
   },
   
