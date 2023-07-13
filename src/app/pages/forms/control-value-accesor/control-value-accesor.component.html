@@ -1,1 +1,4 @@
-<p>control-value-accesor works!</p>
+<form [formGroup]="myForm">
+    <app-custom-input formControlName="myInput"></app-custom-input>
+</form>
+<p>{{ myForm.value | json }}</p>
