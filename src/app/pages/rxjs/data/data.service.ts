@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
@@ -12,7 +13,9 @@ export class DataService {
   behaviourSubject = new BehaviorSubject<number>(0)
   behaviourSubject$ = this.behaviourSubject.asObservable();
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   updateSubject(num: number){
     this.subject.next(num)
@@ -28,6 +31,10 @@ export class DataService {
 
   getBehaviourSubject(){
     return this.behaviourSubject$
+  }
+
+  getPokemons(){
+    return this.http.get('https://pokeapi.co/api/v2/pokemon');
   }
 
 

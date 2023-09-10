@@ -1,1 +1,12 @@
 <app-back-button [route]="'home'"></app-back-button>
+<div class="container">
+    <button (click)="createObservables()">
+        <span>Create Observables</span>
+    </button>
+    <button (click)="filterObservables()">
+        <span>Filter Observables</span>
+    </button>
+    <button (click)="subscribeObservables()" class="sendButton">
+        <span>Emit Observables</span>
+    </button>
+</div>

@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+    button {
+        max-width: 200px;
+        margin-bottom: 5px;
+        padding: 7px;
+        cursor: pointer;
+
+        &.sendButton {
+            background-color: darkgreen;
+            box-shadow: none;
+            color: white;
+            border: 1px solid black;
+        }
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    
+}
