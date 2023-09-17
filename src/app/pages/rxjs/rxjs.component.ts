@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './data/data.service';
-import { Observable, debounceTime, filter, from, fromEvent, interval, of, take, takeUntil, timer } from 'rxjs';
+import { Observable, combineLatest, concat, debounceTime, filter, forkJoin, from, fromEvent, interval, merge, of, startWith, take, takeUntil, timer, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -14,9 +14,13 @@ export class RxjsComponent implements OnInit {
   from$!: Observable<any>
   fromEvent$!: Observable<any>
   of$ !: Observable<any>
-  http$ !: Observable<any>
   interval$ !: Observable<any>
   timer$ !: Observable<any> 
+
+  //Http Observables
+  pokemons$ !: Observable<any>
+  pokemon$ !: Observable<any>
+  
 
   ngOnInit(): void {
   
@@ -55,15 +59,15 @@ export class RxjsComponent implements OnInit {
     //of converts a list of elements in an Observable where each element is emited in order 
     this.of$ = of([1, 2, 3, 4, 5], 2, 3)
     
-    //httpClient returns data from API as an Observable
-    this.http$ = this.dataService.getPokemons()
-
     //emit numbers in sequence based on given timeframe
     this.interval$ = interval(500)
-
+    
     //after given duration, emit numbers in sequence every specified duration (second argument)
     this.timer$ = timer(5000)
     
+    //httpClient returns data from API as an Observable
+    this.pokemons$ = this.dataService.getPokemons()
+    this.pokemon$ = this.dataService.getPokemon()
   }
 
   filterObservables(){
@@ -88,15 +92,39 @@ export class RxjsComponent implements OnInit {
     )
   }
 
+  combineObservables(){
+
+    //combineLatest create a new observable joining in an array the latest emission of both observables 
+    const combine1 = combineLatest([this.pokemon$, this.pokemons$])
+    combine1.subscribe(value => console.log('combineLatest', value))
+
+    //withLatestFrom create a new observable like combineLatest (new array) but it's created from first observable with the last emission of the observable given
+    const combine2 = this.pokemon$.pipe(
+      withLatestFrom(this.pokemons$)
+    )
+    combine2.subscribe(value => console.log('withLatestFrom', value))
+
+    //concat joins in order the emissions of both observables
+    const combine3 = concat(of(1, 2, 3), of(4, 5, 6))
+    combine3.subscribe(value => console.log('concat', value))
+
+    //merge joins the emissions of both observables not respecting the order. The emissions are mixing. 
+    const combine4 = merge(interval(1000), interval(500))
+    combine4.subscribe(value => console.log('merge', value))
+
+    //startWith joins the original observable with one first emission custom given in the argument
+    const combine5 = this.pokemon$.pipe(
+      startWith('startWith, primero emito esto')
+    )
+    combine5.subscribe(value => console.log('startWith', value))
+
+  }
+
   subscribeObservables() {
     this.from$.subscribe(data => console.log('from', data))
     this.fromEvent$.subscribe(data => console.log('fromEvent', data))
     this.of$.subscribe(data => console.log('of', data))
-    this.http$.subscribe(data => console.log('http', data))
     this.interval$.subscribe(data => console.log('interval', data))
     this.timer$.subscribe(data => console.log('timer', data))
   }
-
-
-
 }
