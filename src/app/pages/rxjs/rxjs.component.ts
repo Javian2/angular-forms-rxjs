@@ -26,6 +26,8 @@ export class RxjsComponent implements OnInit {
   
     this.emitSubject()
     this.emitBehaviourSubject();
+    this.emitAsyncSubject()
+    this.emitReplaySubject()
 
   }
 
@@ -43,6 +45,28 @@ export class RxjsComponent implements OnInit {
     this.dataService.updateBehaviourSubject(1) //is emitting despite observable is not suscribed. Without this line, initial value is emited
     this.dataService.getBehaviourSubject().subscribe(data => {
       console.log('Behaviour Subject', data)
+    })
+  }
+
+  emitAsyncSubject() {
+    this.dataService.updateAsyncSubject(1)
+    this.dataService.updateAsyncSubject(2)
+    this.dataService.updateAsyncSubject(3)
+    this.dataService.getAsyncSubject().subscribe(data => {
+      console.log('Async Subject', data)
+    })
+
+    this.dataService.updateAsyncSubject(4)
+    this.dataService.completeAsyncSubject() //emits last value given after complete. Emits before complete won't emit
+  }
+
+  emitReplaySubject() {
+    this.dataService.updateReplaySubject(1)
+    this.dataService.updateReplaySubject(2)
+    this.dataService.updateReplaySubject(3)
+    this.dataService.updateReplaySubject(4)
+    this.dataService.getReplaySubject().subscribe(data => {
+      console.log('Replay Subject', data)
     })
   }
 

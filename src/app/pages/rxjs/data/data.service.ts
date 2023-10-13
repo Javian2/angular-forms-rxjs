@@ -1,36 +1,55 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  subject = new Subject<number>();
-  subject$ = this.subject.asObservable()
-
-  behaviourSubject = new BehaviorSubject<number>(0)
-  behaviourSubject$ = this.behaviourSubject.asObservable();
+  subject$ = new Subject<number>();
+  behaviourSubject$ = new BehaviorSubject<number>(0) //initial value
+  asyncSubject$ = new AsyncSubject<number>()
+  replaySubject$ = new ReplaySubject(3) //bufferSize
 
   constructor(
     private http: HttpClient
   ) { }
 
   updateSubject(num: number){
-    this.subject.next(num)
+    this.subject$.next(num)
   }
 
   getSubject(){
-    return this.subject$
+    return this.subject$.asObservable();
   }
 
   updateBehaviourSubject(num: number){
-    this.behaviourSubject.next(num)
+    this.behaviourSubject$.next(num)
   }
 
   getBehaviourSubject(){
-    return this.behaviourSubject$
+    return this.behaviourSubject$.asObservable()
+  }
+
+  updateAsyncSubject(num: number) {
+    this.asyncSubject$.next(num)
+  }
+
+  completeAsyncSubject() {
+    this.asyncSubject$.complete()
+  }
+
+  getAsyncSubject() {
+    return this.asyncSubject$.asObservable()
+  }
+
+  updateReplaySubject(num: number) {
+    this.replaySubject$.next(num)
+  }
+  
+  getReplaySubject(){
+    return this.replaySubject$.asObservable()
   }
 
   getPokemons(){
