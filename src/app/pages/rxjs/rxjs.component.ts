@@ -61,10 +61,10 @@ export class RxjsComponent implements OnInit {
   }
 
   emitReplaySubject() {
-    this.dataService.updateReplaySubject(1)
-    this.dataService.updateReplaySubject(2)
-    this.dataService.updateReplaySubject(3)
-    this.dataService.updateReplaySubject(4)
+    this.dataService.updateReplaySubject(1) //is not emitted because bufferSize is 3
+    this.dataService.updateReplaySubject(2) //is emitted
+    this.dataService.updateReplaySubject(3) //is emitted
+    this.dataService.updateReplaySubject(4) //is emitted
     this.dataService.getReplaySubject().subscribe(data => {
       console.log('Replay Subject', data)
     })
