@@ -1,15 +1,30 @@
 <app-back-button [route]="'home'"></app-back-button>
 <div class="container">
+    <h2>Must</h2>
     <button (click)="createObservables()">
         <span>Create Observables</span>
     </button>
+
+    <h2>Choose</h2>
     <button (click)="filterObservables()">
         <span>Filter Observables</span>
-    </button>
-    <button (click)="combineObservables()">
-        <span>Combine Observables</span>
     </button>
     <button (click)="subscribeObservables()" class="sendButton">
         <span>Emit Observables</span>
     </button>
+    <hr>
+    <button (click)="combineObservables()">
+        <span>Combine Observables</span>
+    </button>
+    <button (click)="transformObservables()">
+        <span>Transform Observables</span>
+    </button>
+    <hr>
+    <button (click)="multicast()">
+        <span>Multicast</span>
+    </button>
+    <div>
+        <p>{{ (pokemons$ | async)?.results[0].name }}</p>
+        <p>{{ (pokemons$ | async)?.results[1].name }}</p>
+    </div>
 </div>

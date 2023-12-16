@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './data/data.service';
-import { Observable, combineLatest, concat, debounceTime, filter, forkJoin, from, fromEvent, interval, merge, of, startWith, take, takeUntil, timer, withLatestFrom } from 'rxjs';
+import { Observable, bufferTime, combineLatest, concat, concatMap, debounceTime, delay, filter, forkJoin, from, fromEvent, interval, map, merge, mergeMap, of, share, shareReplay, startWith, switchMap, take, takeUntil, tap, timer, withLatestFrom } from 'rxjs';
 
 @Component({
   selector: 'app-rxjs',
@@ -144,6 +144,59 @@ export class RxjsComponent implements OnInit {
 
   }
 
+  transformObservables(){
+    //take values emited during given time and set them into an array, which is finally after 5s
+    this.interval$.pipe(bufferTime(5000)).subscribe(data => console.log('bufferTime', data))
+
+    //values emited are transformed and they are emited IN ORDER due to concat. Emisions are in a cue and when one finishes, next is emited wihout losing any emision (if loses the emision during procesing another one is EXHAUSTMAP)
+    this.of$.pipe(
+      concatMap(val => of(`Producto procesado: ${val}`).pipe(delay(1000)))
+    ).subscribe(data => console.log('concatMap', data))
+
+    //transform values emited
+    this.from$.pipe(map(val => val + 10)).subscribe(data => console.log(data))
+
+    const clickObservableMerge = fromEvent(document, 'click')
+    const intervalObservableMerge = interval(1000);
+
+    //merge emits values of more than one observable at the same time
+    clickObservableMerge.pipe(
+      mergeMap(() => intervalObservableMerge.pipe(
+        tap(val => console.log(`mergeMap: ${val}`))
+      ))
+    ).subscribe();
+
+    const clickObservableSwitch = fromEvent(document, 'click')
+    const intervalObservableSwitch = interval(1000);
+
+    //switch only allows last observable incoming to emit values
+    clickObservableSwitch.pipe(
+      switchMap(() => intervalObservableSwitch.pipe(
+        tap(val => console.log(`switchMap: ${val}`))
+      ))
+    ).subscribe();
+    
+  }
+
+  multicast() {
+    this.pokemons$ = this.dataService.getPokemons().pipe(
+      tap(() => console.log('get pokemon')),
+      //calls the api only once despite having two async pipes in HTML
+      shareReplay(1)
+    );
+
+    //turns cold observable into hot observable -> without share each source gets different info. With share sources receives the same info from processing
+    const source = interval(1000).pipe(
+      tap(x => console.log('Processing: ', x)),
+      map(x => x * x),
+      take(6),
+      share()
+    );
+    
+    source.subscribe(x => console.log('subscription 1: ', x));
+    source.subscribe(x => console.log('subscription 2: ', x));
+  }
+  
   subscribeObservables() {
     this.from$.subscribe(data => console.log('from', data))
     this.fromEvent$.subscribe(data => console.log('fromEvent', data))
